@@ -133,3 +133,56 @@ class LoadRecordsRequest(BaseModel):
 def load_records(req: LoadRecordsRequest):
     # Mock implementation of loading records
     return {"status": "success", "message": f"Loaded records from {req.records_path}"}
+
+@app.get("/records/profile")
+def get_records_profile(student_id: str = Header(..., description="Student identity header")):
+    from app.tools.student_tools import get_profile, GetProfileInput
+    res = get_profile(GetProfileInput(student_id=student_id))
+    if "error" in res:
+        raise HTTPException(status_code=404, detail=res["error"])
+    return res["student"]
+
+@app.get("/records/attendance")
+def get_records_attendance(student_id: str = Header(..., description="Student identity header"), as_of_date: Optional[str] = None):
+    from app.tools.student_tools import get_attendance, GetAttendanceInput, check_exam_eligibility, CheckExamEligibilityInput
+    db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'university.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT a.course_code, c.course_name, a.classes_held, a.classes_attended
+        FROM attendance a
+        JOIN courses c ON a.course_code = c.course_code
+        WHERE a.student_id = ?
+    """, (student_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    
+    if not as_of_date:
+        as_of_date = datetime.now().strftime("%Y-%m-%d")
+        
+    records = []
+    for r in rows:
+        pct = (r['classes_attended'] / r['classes_held']) * 100 if r['classes_held'] > 0 else 0
+        elig = check_exam_eligibility(CheckExamEligibilityInput(student_id=student_id, course_code=r['course_code'], as_of_date=as_of_date))
+        records.append({
+            "course_code": r['course_code'],
+            "course_name": r['course_name'],
+            "classes_held": r['classes_held'],
+            "classes_attended": r['classes_attended'],
+            "attendance_pct": pct,
+            "eligibility_status": elig.get('status', 'NOT_ELIGIBLE')
+        })
+    return {"attendance": records}
+
+@app.get("/records/results")
+def get_records_results(student_id: str = Header(..., description="Student identity header")):
+    db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'university.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM results WHERE student_id = ?", (student_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return {"results": [dict(r) for r in rows]}
+
