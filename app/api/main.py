@@ -113,3 +113,23 @@ def get_audit_log(trace_id: str):
     if not audit:
         raise HTTPException(status_code=404, detail="Audit log not found")
     return audit
+
+@app.get("/sources")
+def get_sources():
+    db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'data', 'university.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT doc_id, title, version, effective_from FROM documents")
+    rows = cursor.fetchall()
+    conn.close()
+    return {"sources": [dict(r) for r in rows]}
+
+class LoadRecordsRequest(BaseModel):
+    # Dummy structure for loading student records
+    records_path: str = Field(..., description="Path to records file (CSV)")
+
+@app.post("/records/load")
+def load_records(req: LoadRecordsRequest):
+    # Mock implementation of loading records
+    return {"status": "success", "message": f"Loaded records from {req.records_path}"}
