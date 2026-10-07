@@ -1,122 +1,69 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { MessageSquare, FileText, Database, Shield, Moon, Sun } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import ChatPage from './pages/ChatPage';
+import DocumentsPage from './pages/DocumentsPage';
+import RecordsPage from './pages/RecordsPage';
+import AuditPage from './pages/AuditPage';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [isDark, setIsDark] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isDark) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  }, [isDark]);
+
+  const navItems = [
+    { path: '/', label: 'Chat', icon: MessageSquare },
+    { path: '/documents', label: 'Documents', icon: FileText },
+    { path: '/records', label: 'Records', icon: Database },
+  ];
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="flex h-screen bg-bg text-text">
+      {/* Sidebar */}
+      <aside className="w-64 border-r border-border flex flex-col hidden md:flex">
+        <div className="p-4 border-b border-border">
+          <h1 className="font-serif text-xl font-bold tracking-tight">University AI</h1>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+        <nav className="flex-1 p-4 space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = location.pathname === item.path;
+            return (
+              <Link 
+                key={item.path} 
+                to={item.path}
+                className={`flex items-center space-x-3 px-3 py-2 rounded-md text-sm transition-colors ${active ? 'bg-surface-2 text-primary font-medium' : 'text-text-muted hover:bg-surface-2 hover:text-text'}`}
+              >
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </Link>
+            )
+          })}
+        </nav>
+        <div className="p-4 border-t border-border flex items-center justify-between">
+          <div className="flex items-center space-x-2 text-xs text-text-subtle">
+            <span className="w-2 h-2 rounded-full bg-success"></span>
+            <span>API Online</span>
+          </div>
+          <button onClick={() => setIsDark(!isDark)} className="p-1.5 rounded-md hover:bg-surface-2 text-text-muted">
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </aside>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <Routes>
+          <Route path="/" element={<ChatPage />} />
+          <Route path="/documents" element={<DocumentsPage />} />
+          <Route path="/records" element={<RecordsPage />} />
+          <Route path="/audit/:traceId" element={<AuditPage />} />
+        </Routes>
+      </main>
+    </div>
   )
 }
-
-export default App
