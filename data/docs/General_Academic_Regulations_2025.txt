@@ -1,0 +1,10 @@
+--- Page 1 ---
+Section 1.1: General Degree Requirements
+All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Point Average (CGPA) of at least 2.0 / 4.0 to qualify for graduation.
+
+Section 2.4: Attendance Mandatory Minimums
+As mandated by the University Senate, every student must maintain a minimum of 75% attendance in each registered course to be eligible to sit for end-semester examinations. Subject to clause 3.1, failure to meet 75% attendance results in automatic course detention.
+
+--- Page 2 ---
+Section 3.1: Examination Passing Marks
+A student is declared passed in a course if they achieve a minimum of 40% marks in the combined internal and end-semester assessments.
