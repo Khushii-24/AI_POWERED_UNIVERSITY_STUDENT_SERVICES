@@ -1,19 +1,7 @@
-rule_id,description,parameter,operator,value,scope_programmes,scope_batches,effective_from,effective_to,source_doc_id,source_section,source_page,source_quote,status,notes
-ATT-MIN-01,Minimum attendance for B.Tech,min_attendance_pct,>=,75,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,7.1,1,"student must have attendance of at least 75 percent in that course (B.Tech)",CONFIRMED,
-ATT-MIN-02,Minimum attendance for M.Tech,min_attendance_pct,>=,80,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,7.1,1,"or at least 80 percent",CONFIRMED,
-ATT-COND-01,Condonation band for B.Tech,condonation_pct,between,65;75,B.Tech,ALL,2024-07-01,2026-08-31,ACAD-REG-2024,7.2,1,"attendance in a course is 65 percent or more but below the",CONFIRMED,
-ATT-COND-02,Condonation band for B.Tech (new),condonation_pct,between,65;74,B.Tech,2023+,2026-09-01,,ACAD-CIR-2026-08,1.0,1,"attendance between 65% and 74% may submit a medical certificate",CONFIRMED,supersedes ATT-COND-01 via ACAD-CIR-2026-08
-ATT-BACK-01,Max backlogs for condonation,max_backlogs_condonation,<=,4,B.Tech;M.Tech,ALL,2024-07-01,,ACAD-REG-2024,7.4,1,"not be granted to a student who has more than 4 active backlogs",CONFIRMED,
-PASS-TOT-01,Passing total marks B.Tech,pass_total_marks,>=,40,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.2,1,"total marks are at least 40 out of 100",CONFIRMED,
-PASS-TOT-02,Passing total marks M.Tech,pass_total_marks,>=,50,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.3,1,"total marks are at least 50 out of 100",CONFIRMED,
-PASS-EXT-01,Passing external marks,pass_external_marks,>=,,ALL,ALL,2024-07-01,,ACAD-REG-2024,4.2,1,"",TODO_VERIFY,Clause cut off
-PASS-GRACE-01,Grace marks,grace_marks,>=,,ALL,ALL,2024-07-01,,ACAD-REG-2024,4.2,1,"",TODO_VERIFY,Not found in docs
-SUP-MAXATT-01,Max supplementary attempts,max_attempts,<=,2,ALL,ALL,2024-07-01,,ACAD-REG-2024,9.3,1,"A student may make at most two supplementary attempts in a course.",CONFIRMED,
-SUP-ELIG-01,Supplementary minimum marks,sup_min_marks,between,30;39,B.Tech,2023+,2026-09-01,,ACAD-CIR-2026-08,2.0,1,"secure between 30% and 39% in a regular examination",CONFIRMED,
-PROM-BACK-01,Max backlogs for promotion,max_active_backlogs,<=,4,ALL,ALL,2024-07-01,,ACAD-REG-2024,8.2,1,"more than 4 active backlogs at the end of an academic year",CONFIRMED,
-PLC-CGPA-01,Placement min CGPA B.Tech,min_cgpa_placement,>=,6.00,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,10.1,1,"CGPA is at least 6.00 (B.Tech)",CONFIRMED,
-PLC-CGPA-02,Placement min CGPA M.Tech,min_cgpa_placement,>=,6.50,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,10.1,1,"at least 6.50 (M.Tech)",CONFIRMED,
-PLC-BACK-01,Placement max backlogs,max_active_backlogs_placement,==,0,ALL,ALL,2024-07-01,,ACAD-REG-2024,10.1,1,"student has zero active backlogs",CONFIRMED,
-SCH-CGPA-01,Scholarship min CGPA,min_cgpa,>=,,ALL,ALL,2024-07-01,,ACAD-REG-2024,1.1,1,"",TODO_VERIFY,Not found in core docs
-HST-FEE-01,Hostel fee / late fee,hostel_fee,>=,,ALL,ALL,2024-07-01,,ACAD-REG-2024,1.1,1,"",TODO_VERIFY,Not found in core docs
-DEG-CRED-01,Degree min credits,min_credits,>=,,ALL,ALL,2024-07-01,,ACAD-REG-2024,1.1,1,"",TODO_VERIFY,Not found in core docs
+rule_id,description,parameter,operator,value,scope_programmes,scope_batches,effective_from,effective_to,source_doc_id,source_section,status
+ATTENDANCE_MIN,Minimum attendance required to sit for exams,ATTENDANCE,>=,75.0,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
+ATTENDANCE_CONDONATION,Condonable attendance range,ATTENDANCE,>=,65.0,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
+PASS_MARK,Minimum marks required to pass a course,MARKS,>=,40.0,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
+SUPPLEMENTARY_ELIGIBILITY,Max backlogs allowed to sit for supplementary,BACKLOG_COUNT,<=,2,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
+PLACEMENT_ELIGIBILITY,Minimum CGPA for placement eligibility,CGPA,>=,6.0,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
+BACKLOG_LIMIT,Max backlogs to proceed to next year,BACKLOG_COUNT,<=,4,,,,TODO_DOC_ID,TODO_SECTION,CONFIRMED
